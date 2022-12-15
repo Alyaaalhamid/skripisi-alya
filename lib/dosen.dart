@@ -47,10 +47,13 @@ class dosen extends StatelessWidget {
     return AppBar(
       backgroundColor: Color(0xff82C695),
       elevation: 0,
-      leading: IconButton(
-        icon: Icon(Icons.arrow_back_ios),
-        onPressed: () {},
-      ),
+      automaticallyImplyLeading: true,
+      // leading: IconButton(
+      //   icon: Icon(Icons.arrow_back_ios),
+      //   onPressed: () {
+
+      //   },
+      // ),
       title: Padding(
         padding: const EdgeInsets.symmetric(
           horizontal: 100,

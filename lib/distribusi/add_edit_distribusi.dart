@@ -97,6 +97,7 @@ class _AddEditDistribusi extends State<AddEditDistribusi> {
     keterangan.add({'name': 'C', 'ket': 'LULUS'});
     keterangan.add({'name': 'D', 'ket': 'Mengulang'});
     keterangan.add({'name': 'E', 'ket': 'Mengulang'});
+    keterangan.add({'name': '', 'ket': 'Belum Mengambil'});
   }
 
   @override
@@ -118,6 +119,21 @@ class _AddEditDistribusi extends State<AddEditDistribusi> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               FormHelper.submitButton('Save', () {
+                // var selected = Nilai.where((e) => e == model.Nilai);
+
+                // if (selected == 'A' || selected == 'B' || selected == 'C') {
+                //   print(model.ket == 'LULUS');
+                // } else if (selected == 'D') {
+                //   print(model.ket == keterangan);
+                // }
+
+                var selectedKeterangan =
+                    keterangan.where((ket) => ket['name'] == model.Nilai);
+                if (selectedKeterangan.length == 1) {
+                  model.ket = selectedKeterangan.first['ket'];
+                } else {
+                  print('belum ambil');
+                }
                 if (ValidateAndSave()) {
                   if (widget.isEditMode) {
                     dBserver.updateDistribusi(model).then((value) {
@@ -127,15 +143,6 @@ class _AddEditDistribusi extends State<AddEditDistribusi> {
                         'Data Berhasil diubah',
                         'OK',
                         () {
-                          if (model.Nilai == 'A' &&
-                              model.Nilai == 'B' &&
-                              model.Nilai == 'C') {
-                            print(keterangan == 'A');
-                          } else if (model.Nilai == 'D' && model.Nilai == 'E') {
-                            print(keterangan == 'D');
-                          } else {
-                            print('tidak lulus');
-                          }
                           Navigator.pop(context);
                         },
                       );
@@ -148,38 +155,20 @@ class _AddEditDistribusi extends State<AddEditDistribusi> {
                         'Data ditambah',
                         'OK',
                         () {
-                          if (Nilai == 'A' || Nilai == 'B' || Nilai == 'C') {
-                            print(model.ket == 'LULUS');
-                          } else if (model.Nilai == 'D' || model.Nilai == 'E') {
-                            print(model.ket == 'Mengulang');
-                          } else {
-                            print('Belum Ambil');
-                          }
+                          // if (Nilai == 'A' || Nilai == 'B' || Nilai == 'C') {
+                          //   print(model.ket == 'LULUS');
+                          // } else if (Nilai == 'D' || Nilai == 'E') {
+                          //   print(model.ket == 'MENGULANG');
+                          // }
+                          // else {
+                          //   print('Belum Ambil');
+                          // }
                           Navigator.pop(context);
                         },
                       );
                     });
                   }
                   //print(model.toJson());
-                }
-
-                // if (model.Nilai == 'A') {
-                //   print(model.ket);
-                //   // Nilai = 'A'; print(keterangan); }
-                // } else if (model.Nilai == 'B') {
-                //   print(model.ket);
-                // }
-                // else {
-                //   print(keterangan);
-                //   // add else print("Nilai is not 'A' nor 'B'");
-                // }
-
-                if (Nilai == 'A' && Nilai == 'B' && Nilai == 'C') {
-                  print('LULUS');
-                } else if (Nilai == 'D' && Nilai == 'E') {
-                  print('Mengulang');
-                } else {
-                  print('tidak lulus');
                 }
                 print(model.toJson());
               },
@@ -236,10 +225,10 @@ class _AddEditDistribusi extends State<AddEditDistribusi> {
                       (onChanged) {
                     this.model.Nilai = onChanged! ?? '';
                   }, (onValidate) {
-                    if (onValidate == null) {
-                      return 'Silahkan Pilih Mata Kuliah';
-                    }
-                    return null;
+                    //   if (onValidate == null) {
+                    //     return 'Silahkan Pilih Mata Kuliah';
+                    //   }
+                    //   return null;
                   },
                       borderRadius: 10,
                       labelFontSize: 14,

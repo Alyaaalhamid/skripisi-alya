@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:skripsi/distribusi.dart';
 import 'package:skripsi/distribusi/add_edit_distribusi.dart';
 import 'package:skripsi/distribusi/db_sever.dart';
 import 'package:skripsi/distribusi/distribusimodel.dart';
@@ -19,6 +18,7 @@ class HomeDistribusi extends StatefulWidget {
 
 class _HomeDistribusi extends State<HomeDistribusi> {
   DBserver dBserver = DBserver();
+  bool isDescending = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,27 +26,46 @@ class _HomeDistribusi extends State<HomeDistribusi> {
           backgroundColor: Colors.green,
           title: const Text('Distribusi Mata Kuliah'),
         ),
-        body: Column(
-          children: [
-            _fetchData(),
-            SizedBox(
-              height: 10,
-            ),
-            Align(
-                alignment: Alignment.centerRight,
-                child: FormHelper.submitButton(
-                  'Tambah',
-                  () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const AddEditDistribusi()));
-                  },
-                  borderRadius: 10,
-                  btnColor: Colors.green,
-                  borderColor: Colors.green,
-                )),
-          ],
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              TextButton.icon(
+                onPressed: () => setState(() {
+                  isDescending = !isDescending;
+                }),
+                icon: RotatedBox(
+                  quarterTurns: 1,
+                  child: Icon(
+                    Icons.compare_arrows,
+                    size: 18,
+                    color: Colors.green,
+                  ),
+                ),
+                label: Text(
+                  isDescending ? 'Descending' : 'Ascending',
+                  style: TextStyle(fontSize: 16, color: Colors.green),
+                ),
+              ),
+              _fetchData(),
+              SizedBox(
+                height: 10,
+              ),
+              Align(
+                  alignment: Alignment.centerRight,
+                  child: FormHelper.submitButton(
+                    'Tambah',
+                    () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const AddEditDistribusi()));
+                    },
+                    borderRadius: 10,
+                    btnColor: Colors.green,
+                    borderColor: Colors.green,
+                  )),
+            ],
+          ),
         ));
   }
 
@@ -55,6 +74,8 @@ class _HomeDistribusi extends State<HomeDistribusi> {
       future: dBserver.getDistribusi(),
       builder:
           (BuildContext context, AsyncSnapshot<List<DistribusiModel>> matkul) {
+        // final sortedItems = matkul.. sort(())
+        // final item = sortedItems[matkul];
         if (matkul.hasData) {
           return _buildDataTable(matkul.data!);
         }
@@ -68,7 +89,7 @@ class _HomeDistribusi extends State<HomeDistribusi> {
       context,
       ['Mata Kuliah ', 'Nilai', 'Keterangan', ''],
       ['nama', 'nilai', 'keterangan', ''],
-      false,
+      true,
       0,
       model,
       (DistribusiModel data) {
@@ -122,11 +143,13 @@ class _HomeDistribusi extends State<HomeDistribusi> {
             });
       },
       headingRowColor: Colors.green,
-      isScrollable: true,
+      isScrollable: false,
       columnTextFontSize: 14,
       columnTextBold: false,
       columnSpacing: 4,
-      onSort: (columnIndex, columnName, asc) {},
+      onSort: (columnIndex, columnName, asc) {
+        print(columnName);
+      },
     );
   }
 }
