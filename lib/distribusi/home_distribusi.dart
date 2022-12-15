@@ -26,12 +26,11 @@ class _HomeDistribusi extends State<HomeDistribusi> {
   DBserver dBserver = DBserver();
   //bool isDescending = false;
 
-  // @override
-  // Void initState(){
-  //   datamatkul = DistribusiModel();
-  //   super.initState();
-  // }
-
+  @override
+  void initState() {
+    super.initState();
+    ascending = false;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -101,78 +100,90 @@ class _HomeDistribusi extends State<HomeDistribusi> {
 
   _buildDataTable(List<DistribusiModel> model) {
     return ListUtils.buildDataTable(
-      context,
-      ['Mata Kuliah ', 'Nilai', 'Keterangan', ''],
-      ['nama', 'nilai', 'keterangan', ''],
-      true,
-      0,
-      model,
-      (DistribusiModel data) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const AddEditDistribusi(
-              isEditMode: true,
-              // model: ,
+        context,
+        ['Mata Kuliah ', 'Nilai', 'Keterangan', ''],
+        ['nama', 'nilai', 'keterangan', ''],
+        ascending,
+        1,
+        model,
+        (DistribusiModel data) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const AddEditDistribusi(
+                isEditMode: true,
+                // model: ,
+              ),
             ),
-          ),
-        );
-      },
-      (DistribusiModel data) {
-        return showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: const Text('Delete'),
-                content: const Text('Anda yakin ingin menghapus ?'),
-                actions: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      FormHelper.submitButton('Ya', () {
-                        dBserver.deleteDistribusi(data).then((value) {
-                          setState(() {
-                            Navigator.of(context).pop();
+          );
+        },
+        (DistribusiModel data) {
+          return showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: const Text('Delete'),
+                  content: const Text('Anda yakin ingin menghapus ?'),
+                  actions: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        FormHelper.submitButton('Ya', () {
+                          dBserver.deleteDistribusi(data).then((value) {
+                            setState(() {
+                              Navigator.of(context).pop();
+                            });
                           });
-                        });
-                      },
-                          width: 100,
-                          borderRadius: 5,
-                          btnColor: Colors.green,
-                          borderColor: Colors.green),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      FormHelper.submitButton('Tidak', () {
-                        Navigator.of(context).pop();
-                      },
-                          width: 100,
-                          borderRadius: 5,
-                          btnColor: Colors.grey,
-                          borderColor: Colors.grey),
-                    ],
-                  )
-                ],
-              );
+                        },
+                            width: 100,
+                            borderRadius: 5,
+                            btnColor: Colors.green,
+                            borderColor: Colors.green),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        FormHelper.submitButton('Tidak', () {
+                          Navigator.of(context).pop();
+                        },
+                            width: 100,
+                            borderRadius: 5,
+                            btnColor: Colors.grey,
+                            borderColor: Colors.grey),
+                      ],
+                    )
+                  ],
+                );
+              });
+        },
+        headingRowColor: Colors.green,
+        isScrollable: false,
+        columnTextFontSize: 14,
+        columnTextBold: false,
+        columnSpacing: 4,
+        onSort: (columnIndex, columnName, asc) {
+          if (columnIndex == 1) {
+            setState(() {
+              if (ascending) {
+                model.sort((a, b) => a.Nilai!.compareTo(b.nama));
+              } else {
+                model.sort((a, b) => a.Nilai!.compareTo(b.nama));
+              }
+              this.ascending = ascending;
             });
-      },
-      headingRowColor: Colors.green,
-      isScrollable: false,
-      columnTextFontSize: 14,
-      columnTextBold: false,
-      columnSpacing: 4,
-      onSort: (columnIndex, columnName, asc) => onSortColumn(),
-    );
+          }
+        }
+        //=> onSortColumn(),
+        );
   }
 
-  void onSortColumn({columnIndex, colmnName, asc}) {
-    if (columnIndex == 0) {
-      setState(() {
-        if (ascending) {
-            .sort((a, b) => a.['nilai'].compareTo(b.['nilai']));
-        }
-      });
-    }
-  }
+  // void onSortColumn({columnIndex, colmnName, asc}) {
+  //   if (columnIndex == 1) {
+  //     setState(() {
+  //       if (ascending) {
+  //           .sort((a, b) => a.Nilai.compareTo(b.Nilai));
+  //       }
+  //     });
+  //   }
+  // }
 }
