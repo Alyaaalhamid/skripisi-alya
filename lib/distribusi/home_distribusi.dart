@@ -29,7 +29,7 @@ class _HomeDistribusi extends State<HomeDistribusi> {
   @override
   void initState() {
     super.initState();
-    ascending = false;
+    ascending = true;
   }
 
   @override
@@ -103,7 +103,7 @@ class _HomeDistribusi extends State<HomeDistribusi> {
         context,
         ['Mata Kuliah ', 'Nilai', 'Keterangan', ''],
         ['nama', 'nilai', 'keterangan', ''],
-        ascending,
+        sort,
         1,
         model,
         (DistribusiModel data) {
@@ -165,11 +165,11 @@ class _HomeDistribusi extends State<HomeDistribusi> {
           if (columnIndex == 1) {
             setState(() {
               if (ascending) {
-                model.sort((a, b) => a.Nilai!.compareTo(b.nama));
+                model.sort((a, b) => a.Nilai!.compareTo(b.Nilai!));
               } else {
-                model.sort((a, b) => a.Nilai!.compareTo(b.nama));
+                model.sort((a, b) => b.Nilai!.compareTo(a.Nilai!));
               }
-              this.ascending = ascending;
+              //this.ascending = ascending;
             });
           }
         }
