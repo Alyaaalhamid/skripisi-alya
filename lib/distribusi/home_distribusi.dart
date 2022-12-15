@@ -1,8 +1,11 @@
+import 'dart:ffi';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:skripsi/distribusi/add_edit_distribusi.dart';
 import 'package:skripsi/distribusi/db_sever.dart';
 import 'package:skripsi/distribusi/distribusimodel.dart';
+import 'package:skripsi/distribusi/model.dart';
 //import 'package:skripsi/distribut/distribusimatkul.dart';
 import 'package:snippet_coder_utils/FormHelper.dart';
 import 'package:snippet_coder_utils/list_helper.dart';
@@ -17,8 +20,19 @@ class HomeDistribusi extends StatefulWidget {
 }
 
 class _HomeDistribusi extends State<HomeDistribusi> {
+  late bool ascending;
+  bool sort = true;
+  //var datamatkul;
   DBserver dBserver = DBserver();
-  bool isDescending = false;
+  //bool isDescending = false;
+
+  // @override
+  // Void initState(){
+  //   datamatkul = DistribusiModel();
+  //   super.initState();
+  // }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,23 +43,23 @@ class _HomeDistribusi extends State<HomeDistribusi> {
         body: SingleChildScrollView(
           child: Column(
             children: [
-              TextButton.icon(
-                onPressed: () => setState(() {
-                  isDescending = !isDescending;
-                }),
-                icon: RotatedBox(
-                  quarterTurns: 1,
-                  child: Icon(
-                    Icons.compare_arrows,
-                    size: 18,
-                    color: Colors.green,
-                  ),
-                ),
-                label: Text(
-                  isDescending ? 'Descending' : 'Ascending',
-                  style: TextStyle(fontSize: 16, color: Colors.green),
-                ),
-              ),
+              // TextButton.icon(
+              //   onPressed: () => setState(() {
+              //     isDescending = !isDescending;
+              //   }),
+              //   icon: RotatedBox(
+              //     quarterTurns: 1,
+              //     child: Icon(
+              //       Icons.compare_arrows,
+              //       size: 18,
+              //       color: Colors.green,
+              //     ),
+              //   ),
+              //   label: Text(
+              //     isDescending ? 'Descending' : 'Ascending',
+              //     style: TextStyle(fontSize: 16, color: Colors.green),
+              //   ),
+              // ),
               _fetchData(),
               SizedBox(
                 height: 10,
@@ -74,7 +88,8 @@ class _HomeDistribusi extends State<HomeDistribusi> {
       future: dBserver.getDistribusi(),
       builder:
           (BuildContext context, AsyncSnapshot<List<DistribusiModel>> matkul) {
-        // final sortedItems = matkul.. sort(())
+        // final sortedItems = Nilai
+        //   ..sort((data1, data2) => isDescending? data2.compareTo(data1) : data2.compareTo(data1)) ;
         // final item = sortedItems[matkul];
         if (matkul.hasData) {
           return _buildDataTable(matkul.data!);
@@ -98,7 +113,7 @@ class _HomeDistribusi extends State<HomeDistribusi> {
           MaterialPageRoute(
             builder: (context) => const AddEditDistribusi(
               isEditMode: true,
-              // model: data,
+              // model: ,
             ),
           ),
         );
@@ -147,9 +162,17 @@ class _HomeDistribusi extends State<HomeDistribusi> {
       columnTextFontSize: 14,
       columnTextBold: false,
       columnSpacing: 4,
-      onSort: (columnIndex, columnName, asc) {
-        print(columnName);
-      },
+      onSort: (columnIndex, columnName, asc) => onSortColumn(),
     );
+  }
+
+  void onSortColumn({columnIndex, colmnName, asc}) {
+    if (columnIndex == 0) {
+      setState(() {
+        if (ascending) {
+            .sort((a, b) => a.['nilai'].compareTo(b.['nilai']));
+        }
+      });
+    }
   }
 }
