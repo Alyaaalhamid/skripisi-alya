@@ -169,7 +169,7 @@ class _HomeDistribusi extends State<HomeDistribusi> {
               } else {
                 model.sort((a, b) => b.Nilai!.compareTo(a.Nilai!));
               }
-              //this.ascending = ascending;
+              this.ascending = ascending;
             });
           }
         }

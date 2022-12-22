@@ -2,13 +2,17 @@ import 'dart:async';
 
 //import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:skripsi/Login.dart';
 import 'package:skripsi/home_page.dart';
 import 'package:skripsi/reuseable_widgets/reuseable_widget.dart';
+import 'package:skripsi/schedulenotif/db_helper.dart';
 
 String username = '';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await taskHelper.initDb();
   runApp(const MyApp());
 }
 
@@ -18,7 +22,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
         theme: ThemeData(

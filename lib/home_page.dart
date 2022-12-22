@@ -8,7 +8,7 @@ import 'package:skripsi/distribusi/add_edit_distribusi.dart';
 import 'package:skripsi/distribusi/home_distribusi.dart';
 //import 'package:skripsi/distribut/distribusimatkul.dart';
 import 'package:skripsi/dosen.dart';
-import 'package:skripsi/jadwal.dart';
+import 'package:skripsi/schedulenotif/jadwal.dart';
 import 'package:skripsi/model/color_pallete.dart';
 import 'package:skripsi/profile.dart';
 
@@ -84,7 +84,7 @@ class homepage extends StatelessWidget {
                     ),
                   ),
                   SizedBox(
-                    height: 20,
+                    height: 40,
                   ),
                   Text(
                     'Welcome $username !',
@@ -92,6 +92,13 @@ class homepage extends StatelessWidget {
                         color: colorpallete.black,
                         fontSize: 30,
                         fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    'Selamat datang Di aplikasi MyAR ',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 25,
+                        fontWeight: FontWeight.normal),
                   ),
                   // Container(
                   //   margin: EdgeInsets.symmetric(vertical: 10),
